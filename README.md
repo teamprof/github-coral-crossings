@@ -78,7 +78,7 @@ note: ESP32-S3 acts as a bridge between Coral Micro Board and Lora module. For M
 ---
 
 
-## Download and build firmwares for the Coral Assistive System
+## Download and build firmwares for the Coral Crossings System
 Since there are two MCUs (NXP i.MX RT1176 and ESP32S3) in the "ai edge device", They have to flash separately.
 
 ### Download, build and flash firmware on ESP32S3
@@ -101,7 +101,7 @@ to [Build apps with FreeRTOS for the Dev Board Micro](https://coral.ai/docs/dev-
 **Note:** This project depends on [coralmicro](https://github.com/google-coral/coralmicro),
 which requires about 2.5 GB.  
 
-## Run the Coral Assistive System
+## Run the Coral Crossings System
 1. Launch a Serial terminal, set baud rate to 115200 and connect it to the USB port of the Coral Dev Board Micro
 2. Power on both the Coral Dev Board Micro and ESP32S3. If everything goes smooth, you should see the followings on the serial terminal:
 [![serial terminal screen](/doc/image/serial-terminal-.png)](https://github.com/teamprof/github-coral-crossings/blob/main/doc/image/serial-terminal-.png)
@@ -235,7 +235,7 @@ The I2C communication code is implemented in the file "./src/app/thread/ThreadRe
 [![system image](/doc/image/system-img.png)](https://github.com/teamprof/github-coral-crossings/blob/main/doc/image/system-img.png)
 
 ## Demo
-Video demo is available on [Coral crossings video](https://www.youtube.com/watch?v=D5fEQ51aty8)  
+Video demo is available on [Coral crossings video](https://www.youtube.com/watch?v=)  
 
 
 ---

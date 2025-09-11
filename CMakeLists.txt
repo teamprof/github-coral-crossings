@@ -21,6 +21,8 @@ set(main_m7_SOURCES
         src/app/thread/ThreadReporter.cpp
         src/app/thread/QueueMainM7.cpp
         src/app/thread/QueueMain.cpp
+        src/app/config/Speakers.cpp
+        src/app/config/Regions.cpp
 
         DATA
         coralmicro/models/tf2_ssd_mobilenet_v2_coco17_ptq_edgetpu.tflite
