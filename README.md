@@ -29,8 +29,8 @@ spk-n       spk-1         edge ai       spk+1        spk+n
 ```
 
 ### System operation
-There are two core devices in the Wildlife crossings project. The first one is a Edge AI device running on Coral Dev Board Micro, which looks for animal position and whose firmware is available on [coral-crossings](https://github.com/teamprof/github-coral-crossings). 
-The second one is a Lora speaker device running on ESP32S3, which receives command from Lora Module and output sound to speaker, its firmware is available on [esp32s3-lora-speaker](https://github.com/teamprof/github-esp32s3-lora-speaker).
+There are two core devices in the Wildlife Crossings project. The first is an Edge AI device running on the Coral Dev Board Micro, which detects animal positions. Its firmware is available at [coral-crossings](https://github.com/teamprof/github-coral-crossings). 
+The second device is a LoRa speaker system powered by the ESP32-S3. It receives commands from a LoRa module and outputs sound through a speaker. Its firmware is available at [esp32s3-lora-speaker](https://github.com/teamprof/github-esp32s3-lora-speaker).
 
 When animals (e.g., koalas) are detected to the left of the crossings, the far-left speaker emits the sound of their natural predators (e.g., dingoes). This encourages the animals (e.g., koalas) to move rightward toward the crossings.
 
@@ -38,7 +38,7 @@ When animals (e.g., koalas) are detected to the left of the crossings, the far-l
 ### demo system
 A simplified system with one edge AI device and two Lora speakers to illustrate the principal idea of the project, i.e., directing animals to the safe road crossings by the sound of their natural enemies.
 
-[![crossings-demo-system](/doc/image/coral-crossings-demo-system.png)](https://github.com/teamprof/github-esp32s3-lora-speaker/blob/main/image/coral-crossings-demo-system.png)
+[![crossings-demo-system](/doc/image/coral-crossings-demo-system.png)](https://github.com/teamprof/github-coral-crossings/blob/main/image/coral-crossings-demo-system.png)
 
 
 
