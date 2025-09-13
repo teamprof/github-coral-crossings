@@ -88,6 +88,7 @@ A simplified system with one edge AI device and two Lora speakers to illustrate 
 
 [![crossings-demo-system](/doc/image/coral-crossings-demo-system.png)](https://github.com/teamprof/github-coral-crossings/blob/main/image/coral-crossings-demo-system.png)
 
+Demo hardware   
 [![crossings-demo-hardware](/doc/image/coral-crossings-demo-hardware.png)](https://github.com/teamprof/github-coral-crossings/blob/main/image/coral-crossings-demo-hardware.png)
 
 
@@ -297,20 +298,28 @@ The I2C communication code is implemented in the file "./src/app/thread/ThreadRe
 ## Demo
 Video demo is available on [wildlife crossing demo](https://youtu.be/Tb9IuNWhj5k)  
 
+00:00 animal starts at safe crossing => speaker off, no dingoes' sound  
+00:03 animal moves to left => speaker-left turns LED on and outputs dingoes' sound  
+00:08 animal moves to safe crossing => speaker off, no dingoes' sound  
+00:13 animal moves to right => speaker-right turns LED on (note: no speaker is connected)  
+00:16 animal moves to safe crossing => speaker off, no dingoes' sound  
+00:21 animal moves to left => speaker-left turns LED on and outputs dingoes' sound  
+00:33 animal moves to safe crossing => speaker off, no dingoes' sound
 
 ---
 ### Debug
-Enable or disable log be defining/undefining macro on "src/LibLog.h"
+Enable or disable log by defining/undefining macro before incle "src/LibLog.h"
 
 Debug is disabled by "#undef DEBUG_LOG_LEVEL"
 Enable trace debug by "#define DEBUG_LOG_LEVEL Debug"
 
-Example of LibLog.h
+Example
 ```
 // enable debug log by defining the following macro
 #define DEBUG_LOG_LEVEL Debug
 // disable debug log by comment out the macro DEBUG_LOG_LEVEL 
 // #undef DEBUG_LOG_LEVEL
+#include "LibLog.h"
 ```
 ---
 ### Troubleshooting
