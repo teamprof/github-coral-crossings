@@ -17,6 +17,27 @@ note: This project is supported by NextPCB (https://www.nextpcb.com), an one-sto
 ```
          Kaolas ─►
 
+spk-n       spk-1         edge ai       spk+1        spk+n
+(on)        (off)         device        (off)        (off)
+
+───────────────────────┐             ┌────────────────────────
+                       | overpasses  |
+       road            |      /      |         road
+                       | underpasses |
+───────────────────────┘             └────────────────────────
+
+```
+
+### System operation
+There are two core devices in the Wildlife Crossings project. The first is an Edge AI device running on the Coral Dev Board Micro, which detects animal positions. Its firmware is available at [coral-crossings](https://github.com/teamprof/github-coral-crossings). 
+The second device is a LoRa speaker device powered by the ESP32-S3. It receives commands from a LoRa module and outputs sound through a speaker. Its firmware is available at [esp32s3-lora-speaker](https://github.com/teamprof/github-esp32s3-lora-speaker).
+
+When animals (e.g., koalas) are detected to the left of the crossings, the far-left speaker emits the sound of their natural predators (e.g., dingoes). This encourages the animals (e.g., koalas) to move rightward toward the crossings.
+
+```
+Fig 1. detected kaolas, spk-n outputs dingoes' sound
+
+         Kaolas ─►
 
 spk-n       spk-1         edge ai       spk+1        spk+n
 (on)        (off)         device        (off)        (off)
@@ -26,19 +47,48 @@ spk-n       spk-1         edge ai       spk+1        spk+n
        road            |      /      |         road
                        | underpasses |
 ───────────────────────┘             └────────────────────────
+
+
+
+
+Fig 2. kaolas is moving towards safe crossing, spk-n off and spk-1 on to dirrect kaolas towards safe crossing
+
+                 Kaolas ─►
+
+spk-n       spk-1         edge ai       spk+1        spk+n
+(off)       (on)          device        (off)        (off)
+
+───────────────────────┐             ┌────────────────────────
+                       | overpasses  |
+       road            |      /      |         road
+                       | underpasses |
+───────────────────────┘             └────────────────────────
+
+
+
+
+Fig 3. kaolas is within safe crossing area, all spk off 
+
+                          Kaolas
+
+spk-n       spk-1         edge ai       spk+1        spk+n
+(off)       (off)         device        (off)        (off)
+
+───────────────────────┐             ┌────────────────────────
+                       | overpasses  |
+       road            |      /      |         road
+                       | underpasses |
+───────────────────────┘             └────────────────────────
 ```
 
-### System operation
-There are two core devices in the Wildlife Crossings project. The first is an Edge AI device running on the Coral Dev Board Micro, which detects animal positions. Its firmware is available at [coral-crossings](https://github.com/teamprof/github-coral-crossings). 
-The second device is a LoRa speaker system powered by the ESP32-S3. It receives commands from a LoRa module and outputs sound through a speaker. Its firmware is available at [esp32s3-lora-speaker](https://github.com/teamprof/github-esp32s3-lora-speaker).
-
-When animals (e.g., koalas) are detected to the left of the crossings, the far-left speaker emits the sound of their natural predators (e.g., dingoes). This encourages the animals (e.g., koalas) to move rightward toward the crossings.
 
 
 ### demo system
 A simplified system with one edge AI device and two Lora speakers to illustrate the principal idea of the project, i.e., directing animals to the safe road crossings by the sound of their natural enemies.
 
 [![crossings-demo-system](/doc/image/coral-crossings-demo-system.png)](https://github.com/teamprof/github-coral-crossings/blob/main/image/coral-crossings-demo-system.png)
+
+[![crossings-demo-hardware](/doc/image/coral-crossings-demo-hardware.png)](https://github.com/teamprof/github-coral-crossings/blob/main/image/coral-crossings-demo-hardware.png)
 
 
 
@@ -82,7 +132,7 @@ note: ESP32-S3 acts as a bridge between Coral Micro Board and Lora module. For M
 Since there are two MCUs (NXP i.MX RT1176 and ESP32S3) in the "ai edge device", They have to flash separately.
 
 ### Download, build and flash firmware on ESP32S3
-Please following the instruction on "https://github.com/teamprof/github-esp32s3-lora-speaker" about how to flash the ESP32S3 firmware.
+Please following the instruction on "https://github.com/teamprof/github-esp32s3-lora-speaker" about how to flash the ESP32S3 firmware (config as transmitter tx).
 
 ### Download, build and flash firmware on Coral Dev Board Micro
 Launch a Ubuntu/Linux terminal and type the following commands to download, build and flash the firmware on the Coral Dev Board Micro
@@ -92,8 +142,14 @@ Launch a Ubuntu/Linux terminal and type the following commands to download, buil
 4. git submodule update --init --recursive
 5. bash coralmicro/setup.sh
 6. cmake -B out -S .
-7. make -C out -j4
-8. python3 coralmicro/scripts/flashtool.py --build_dir out --elf_path out/coralmicro-app
+7. make -C out -j4  
+   If everything goes smooth, you should see the followings on the terminal:
+[![screen-build](/doc/image/screen-build.png)](https://github.com/teamprof/github-coral-crossings/blob/main/doc/image/screen-build.png)
+
+8. python3 coralmicro/scripts/flashtool.py --build_dir out --elf_path out/coralmicro-app  
+   If everything goes smooth, you should see the followings on the terminal:
+[![screen-flash](/doc/image/screen-flash.png)](https://github.com/teamprof/github-coral-crossings/blob/main/doc/image/screen-flash.png)
+
 
 For more information about creating a project, either in-tree or out-of-tree, see the guide
 to [Build apps with FreeRTOS for the Dev Board Micro](https://coral.ai/docs/dev-board-micro/freertos/).
@@ -104,7 +160,7 @@ which requires about 2.5 GB.
 ## Run the Coral Crossings System
 1. Launch a Serial terminal, set baud rate to 115200 and connect it to the USB port of the Coral Dev Board Micro
 2. Power on both the Coral Dev Board Micro and ESP32S3. If everything goes smooth, you should see the followings on the serial terminal:
-[![serial terminal screen](/doc/image/serial-terminal-.png)](https://github.com/teamprof/github-coral-crossings/blob/main/doc/image/serial-terminal-.png)
+[![serial terminal screen](/doc/image/screen-serial-terminal.png)](https://github.com/teamprof/github-coral-crossings/blob/main/doc/image/screen-serial-terminal.png)
 
 
 ## Setup and run Python script
@@ -112,13 +168,20 @@ Install Python plugins and run the Python script to see the image and detection 
 1. python3 -m pip install -r py/requirements.txt
 2. python3 py/coral_crossings.py
 3. Place an animal in front of the camera. If the animal is detected, you should see a box around the animal on the GUI app. The "User LED" on the Coral Dev Board Micro should also be turned on.
-4. Move the animal to left, you should see a red-colored rectangle in the GUI app around the left region. The left speaker should output dingoes' sound.
-5. Move the animal to middle, you should see a green-colored rectangle in the GUI app around the middle region. All the left speakers should be silent.
-6. Move the animal to right, you should see a red-colored rectangle in the GUI app around the right region. The right speaker should output dingoes' sound.
+4. Move the animal to left, you should see a red-colored rectangle in the GUI app around the left region. The left speaker should output dingoes' sound.  
+[![animal-at-left](/doc/image/animal-at-left.png)](https://github.com/teamprof/github-coral-left/blob/main/doc/image/animal-at-crossings.png)
+5. Move the animal to middle, you should see a green-colored rectangle in the GUI app around the middle region. All the left speakers should be silent.   
+[![animal-at-crossings](/doc/image/animal-at-crossings.png)](https://github.com/teamprof/github-coral-crossings/blob/main/doc/image/animal-at-crossings.png)
+6. Move the animal to right, you should see a red-colored rectangle in the GUI app around the right region. The right speaker should output dingoes' sound.  
+[![animal-at-right](/doc/image/animal-at-right.png)](https://github.com/teamprof/github-coral-crossings/blob/main/doc/image/animal-at-right.png)
 
-If everything goes smooth, you should see the following GUI app on Ubuntu:
-[![gui app screen](/doc/image/gui-app.png)](https://github.com/teamprof/github-coral-crossings/blob/main/doc/image/gui-app.png)
-// !!!
+
+
+Photo of GUI app and serial terminal on Ubuntu:   
+[![gui app](/doc/image/gui-app+minicom.png)](https://github.com/teamprof/github-coral-crossings/blob/main/doc/image/gui-app+minicom.png)
+
+Photo of animal:   
+[![animal](/doc/image/animal.png)](https://github.com/teamprof/github-coral-crossings/blob/main/doc/image/animal.png)
 
 ---
 
@@ -231,11 +294,8 @@ The I2C communication code is implemented in the file "./src/app/thread/ThreadRe
 
 ---
 
-## System image
-[![system image](/doc/image/system-img.png)](https://github.com/teamprof/github-coral-crossings/blob/main/doc/image/system-img.png)
-
 ## Demo
-Video demo is available on [Coral crossings video](https://www.youtube.com/watch?v=)  
+Video demo is available on [wildlife crossing demo](https://youtu.be/Tb9IuNWhj5k)  
 
 
 ---
